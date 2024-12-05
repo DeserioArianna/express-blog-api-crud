@@ -58,7 +58,9 @@ const update = (req, res) => {
         ...req.body
     };
     if (postIndex === - 1) {
-        res.statusCode = 404;
+        res.status(404).json({
+            error: "Post non trovato"
+        })
     } else {
         posts[postIndex] = updatePost;
         res.statusCode = 204;
