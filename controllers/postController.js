@@ -2,10 +2,20 @@ const posts = require("../data/posts");
 
 // Funzione per ottenere tutti i post  
 const index = (req, res) => {
-    res.json({
-        posts,
-        count: posts.length
-    });
+    console.log(req.query.tags)
+    const query = req.query.tags;
+    if (query === undefined) {
+        res.json({
+            posts,
+            count: posts.length
+        });
+    } else {
+        const postFilter = posts.filter((post) => post.tags.includes(query));
+        res.json ({
+            data: postFilter,
+            count: postFilter.length
+        });
+    };
 };
 
 // Funzione per ottenere un singolo post
@@ -28,8 +38,8 @@ const create = (req, res) => {
     // console.log(lastPost);
 
     const newPostId = lastPost + 1;
-    const newPost ={
-        id : newPostId,
+    const newPost = {
+        id: newPostId,
         ...req.body
     };
     posts.push(newPost);
@@ -41,19 +51,16 @@ const create = (req, res) => {
 // Funzione per modificare un post per intero
 const update = (req, res) => {
     const postsId = parseInt(req.params.id);
-    const newData = req.body;
-    console.log(newData)
     // res.json("Modifichiamo per intero un post" + " " + postsId);
     const postIndex = posts.findIndex((post) => post.id === postsId);
     const updatePost = {
-        id : postsId,
-        ...newData
+        id: postsId,
+        ...req.body
     };
     if (postIndex === - 1) {
         res.statusCode = 404;
     } else {
         posts[postIndex] = updatePost;
-        console.log(posts[postIndex])
         res.statusCode = 204;
         res.json(updatePost);
     };
@@ -75,7 +82,7 @@ const destroy = (req, res) => {
     if (postIndex !== -1) {
         posts.splice(postIndex, 1);
         console.log(posts);
-        res.sendStatus(204); 
+        res.sendStatus(204);
     } else {
         res.sendStatus(404);
     };
