@@ -22,14 +22,41 @@ const show = (req, res) => {
 
 // Funzione per creare un nuovo post
 const create = (req, res) => {
-    res.json("Creaiamo un nuovo post");
+
+    // console.log(req.body);
+    const lastPost = posts[posts.length - 1].id;
+    // console.log(lastPost);
+
+    const newPostId = lastPost + 1;
+    const newPost ={
+        id : newPostId,
+        ...req.body
+    };
+    posts.push(newPost);
+    res.statusCode = 201;
+    res.json(newPost);
 };
 
 
 // Funzione per modificare un post per intero
 const update = (req, res) => {
-    const postsId = req.params.id;
-    res.json("Modifichiamo per intero un post" + " " + postsId);
+    const postsId = parseInt(req.params.id);
+    const newData = req.body;
+    console.log(newData)
+    // res.json("Modifichiamo per intero un post" + " " + postsId);
+    const postIndex = posts.findIndex((post) => post.id === postsId);
+    const updatePost = {
+        id : postsId,
+        ...newData
+    };
+    if (postIndex === - 1) {
+        res.statusCode = 404;
+    } else {
+        posts[postIndex] = updatePost;
+        console.log(posts[postIndex])
+        res.statusCode = 204;
+        res.json(updatePost);
+    };
 };
 
 

@@ -4,9 +4,12 @@ const port = 3000;
 const posts = require("./data/posts");
 const postsRouter = require("./routers/posts");
 
+app.use(express.json());
+
 app.use("/posts", postsRouter);
 
 app.use(express.static("public"));
+
 
 app.get("/", (req, res) => {
     res.send("Server del mio blog");
