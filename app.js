@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const posts = require("./data/posts");
 const postsRouter = require("./routers/posts");
+const handleError = require("./middleware/handleError");
 
 app.use(express.json());
 
@@ -12,6 +13,7 @@ app.use(express.static("public"));
 
 
 app.get("/", (req, res) => {
+    goku()
     res.send("Server del mio blog");
 });
 
@@ -21,6 +23,8 @@ app.get("/bacheca", (req, res) => {
         posts
     });
 });
+
+app.use(handleError);
 
 app.listen(port, () => {
     console.log("Server in ascolto");

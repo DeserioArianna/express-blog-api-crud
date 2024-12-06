@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController");
+const checkPostExists = require("../middleware/checkPostExists");
 
 // Rotta per ottenere la lista dei post (Index)
 // router.get("/", (req, res) => {
@@ -15,7 +16,7 @@ router.get("/", postController.index);
 //     // res.json("Leggiamo un determinato post" + " " +postsId);
 //     res.json(post);
 // });
-router.get("/:id", postController.show);
+router.get("/:id", checkPostExists, postController.show);
 
 // Rotta per creare un nuovo post (Create)
 // router.post("/", (req, res) => {
@@ -29,7 +30,7 @@ router.post("/", postController.create)
 //     const postsId = req.params.id;
 //     res.json("Modifichiamo per intero un post" + " " + postsId);
 // });
-router.put("/:id", postController.update);
+router.put("/:id", checkPostExists, postController.update);
 
 
 // Rotta per modificare un o più parametri di un post (Modify)
@@ -37,13 +38,13 @@ router.put("/:id", postController.update);
 //     const postsId = req.params.id;
 //     res.json("Modifichiamo un o più parametri di un post" + " " + postsId);
 // });
-router.patch("/:id", postController.modify);
+router.patch("/:id", checkPostExists, postController.modify);
 
 // Rotta per eliminare un post (Destroy)
 // router.delete("/:id", (req, res) => {
 //     const postsId = req.params.id;
 //     res.json("Eliminiamo un post" + " " + postsId);
 // });
-router.delete("/:id", postController.destroy);
+router.delete("/:id", checkPostExists, postController.destroy);
 
 module.exports = router;

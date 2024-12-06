@@ -11,7 +11,7 @@ const index = (req, res) => {
         });
     } else {
         const postFilter = posts.filter((post) => post.tags.includes(query));
-        res.json ({
+        res.json({
             data: postFilter,
             count: postFilter.length
         });
@@ -22,11 +22,7 @@ const index = (req, res) => {
 const show = (req, res) => {
     const postId = parseInt(req.params.id);
     const post = posts.find((post) => post.id === postId);
-    if (post) {
-        res.json(post);
-    } else {
-        res.sendStatus(404);
-    };
+    res.json(post);
 };
 
 
@@ -57,15 +53,9 @@ const update = (req, res) => {
         id: postsId,
         ...req.body
     };
-    if (postIndex === - 1) {
-        res.status(404).json({
-            error: "Post non trovato"
-        })
-    } else {
-        posts[postIndex] = updatePost;
-        res.statusCode = 204;
-        res.json(updatePost);
-    };
+    posts[postIndex] = updatePost;
+    res.statusCode = 204;
+    res.json(updatePost);
 };
 
 
@@ -85,8 +75,6 @@ const destroy = (req, res) => {
         posts.splice(postIndex, 1);
         console.log(posts);
         res.sendStatus(204);
-    } else {
-        res.sendStatus(404);
     };
 };
 
